@@ -2,7 +2,7 @@
   "password": "samiul2024",
   "hero": {
     "name": "Samiul Alam",
-    "role": "MS Researcher · Agriculturaist",
+    "role": "Research Assistant",
     "uni": "Sher-e-Bangla Agricultural University",
     "loc": "Dhaka, Bangladesh",
     "email": "kbdsamiulalam@gmail.com",
@@ -37,6 +37,11 @@
       "type": "edit",
       "msg": "Updated hero/profile section",
       "time": "10 Jun, 10:34"
+    },
+    {
+      "type": "edit",
+      "msg": "Updated hero/profile section",
+      "time": "10 Jun, 10:37"
     }
   ]
 }
