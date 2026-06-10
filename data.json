@@ -1,0 +1,42 @@
+{
+  "password": "samiul2024",
+  "hero": {
+    "name": "Samiul Alam",
+    "role": "MS Researcher · Agriculturaist",
+    "uni": "Sher-e-Bangla Agricultural University",
+    "loc": "Dhaka, Bangladesh",
+    "email": "kbdsamiulalam@gmail.com",
+    "badge": "PhD Aspirant",
+    "linkedin": "http://www.linkedin.com/in/samiul-alam-738b37204",
+    "rg": "https://www.researchgate.net/profile/Samiul-Alam-6"
+  },
+  "settings": {
+    "title": "Samiul Alam | Agricultural Scientist",
+    "url": "https://samiulalam.github.io/",
+    "desc": "Samiul Alam — MSc researcher at Sher-e-Bangla Agricultural University. Specialising in biostimulants, stress physiology, and plant growth-promoting rhizobacteria."
+  },
+  "publications": [],
+  "talks": [],
+  "gallery": [],
+  "awards": [],
+  "memberships": [],
+  "experience": [],
+  "workshops": [],
+  "changelog": [
+    {
+      "type": "edit",
+      "msg": "Updated hero/profile section",
+      "time": "10 Jun, 10:08"
+    },
+    {
+      "type": "edit",
+      "msg": "Updated hero/profile section",
+      "time": "10 Jun, 10:08"
+    },
+    {
+      "type": "edit",
+      "msg": "Updated hero/profile section",
+      "time": "10 Jun, 10:34"
+    }
+  ]
+}
