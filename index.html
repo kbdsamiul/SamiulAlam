@@ -1356,6 +1356,9 @@
 </section>
 
 <!-- DYNAMIC_GALLERY -->
+<section id="gallery-section" style="display:none">
+  <div class="container" id="dynamic-gallery"></div>
+</section>
 
 <!-- ── LEADERSHIP ────────────────────────────────────────── -->
 <section id="leadership">
@@ -1451,12 +1454,150 @@
 
 <!-- ── FOOTER ────────────────────────────────────────────── -->
 <footer>
-  <p>© 2026 Samiul Alam · Sher-e-Bangla Agricultural University, Dhaka, Bangladesh</p>
+  <p>© 2026 Samiul Alam · Sher-e-Bangla Agricultural University, Dhaka, Bangladesh<!-- BUILD_TIMESTAMP --></p>
   <p style="margin-top:.4rem;"><a href="mailto:kbdsamiulalam@gmail.com">kbdsamiulalam@gmail.com</a></p>
 </footer>
 
 <script>
-  // ── Theme toggle ──────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════
+// LIVE CONTENT RENDERER — reads from admin localStorage
+// Any content added in admin.html shows here automatically
+// ═══════════════════════════════════════════════════════════
+(function renderAdminContent() {
+  const STORE_KEY = 'samiul_site_data';
+  let d;
+  try { d = JSON.parse(localStorage.getItem(STORE_KEY)); } catch(e) {}
+  if (!d) return; // no admin data yet — static HTML shows as-is
+
+  // ── Helper: format authors (bold **name**) ──────────────
+  function fmtAuthors(str) {
+    return (str || '').replace(/\*\*(.+?)\*\*/g, '<span class="me">$1</span>');
+  }
+
+  // ── PUBLICATIONS ────────────────────────────────────────
+  const pubMarker = document.querySelector('#publications .pub-list');
+  if (pubMarker && d.publications && d.publications.length) {
+    const newPubs = d.publications.map(p => {
+      return `<div class="pub-card" style="border-left-color:var(--accent-mid)">
+        <div class="pub-number">NEW · ${p.year || 'TBD'}</div>
+        <div class="pub-authors">${fmtAuthors(p.authors)}</div>
+        <div class="pub-title">${p.title}</div>
+        <div class="pub-venue">${p.venue || ''}</div>
+        <div class="pub-tags">
+          ${p.doi ? `<a href="${p.doi}" class="tag tag-doi" target="_blank" rel="noopener">DOI ↗</a>` : ''}
+          ${p.status === 'review' ? '<span class="tag tag-review">Under Review</span>' : ''}
+          ${p.status === 'accepted' ? '<span class="tag tag-doi">Accepted</span>' : ''}
+          ${p.type === 'book' ? '<span class="tag tag-bookchapter">Book Chapter</span>' : ''}
+        </div>
+      </div>`;
+    }).join('');
+    pubMarker.insertAdjacentHTML('afterbegin', newPubs);
+    // Update pub count in hero
+    const pubCount = document.getElementById('pub-count');
+    if (pubCount) pubCount.textContent = 12 + d.publications.length;
+  }
+
+  // ── TALKS / PRESENTATIONS ────────────────────────────────
+  const presSection = document.querySelector('#presentations .pres-list');
+  if (presSection && d.talks && d.talks.length) {
+    const typeLabel = t => ({oral:'Oral',poster:'Poster',invited:'Invited Talk',keynote:'Keynote'}[t] || t);
+    const newTalks = d.talks.map(t => `
+      <div class="pres-item">
+        <span class="pres-type ${t.type === 'poster' ? 'poster' : 'oral'}">${typeLabel(t.type)}</span>
+        <div class="pres-body">
+          ${t.img ? `<img src="${t.img}" style="width:100px;height:65px;object-fit:cover;border-radius:6px;margin-bottom:.4rem;display:block"/>` : ''}
+          <div class="pres-conf">${t.conf}</div>
+          <div class="pres-meta">${[t.date, t.loc].filter(Boolean).join(' · ')}</div>
+        </div>
+      </div>`).join('');
+    presSection.insertAdjacentHTML('afterbegin', newTalks);
+    // Update talk count in hero
+    const talkCount = document.getElementById('talk-count');
+    if (talkCount) talkCount.textContent = 5 + d.talks.length;
+  }
+
+  // ── PHOTO GALLERY ────────────────────────────────────────
+  if (d.gallery && d.gallery.length) {
+    const galMarker = document.getElementById('dynamic-gallery');
+    if (galMarker) {
+      galMarker.innerHTML = `
+        <div class="section-label">Gallery</div>
+        <h2 class="section-title">Photos</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem">
+          ${d.gallery.map(g => `
+            <div style="border-radius:10px;overflow:hidden;background:var(--bg-subtle);border:1px solid var(--border)">
+              <img src="${g.src}" alt="${g.caption||''}" style="width:100%;height:150px;object-fit:cover;display:block"/>
+              ${g.caption ? `<div style="font-size:.75rem;color:var(--text-muted);padding:.5rem .75rem">${g.caption}</div>` : ''}
+            </div>`).join('')}
+        </div>`;
+      galMarker.style.display = 'block';
+      document.getElementById('gallery-section').style.display = 'block';
+    }
+  }
+
+  // ── AWARDS / HONORS ──────────────────────────────────────
+  const honorsSection = document.querySelector('#honors .workshop-list');
+  if (honorsSection && d.awards && d.awards.length) {
+    const newAwards = d.awards.map(a => `
+      <div class="workshop-item">
+        ${a.logo ? `<img src="${a.logo}" style="height:32px;border-radius:5px;object-fit:contain;flex-shrink:0"/>` : ''}
+        <div class="workshop-text"><strong>${a.title}</strong>${a.org ? ' — ' + a.org : ''}</div>
+        <div class="workshop-year">${a.year || ''}</div>
+      </div>`).join('');
+    honorsSection.insertAdjacentHTML('afterbegin', newAwards);
+  }
+
+  // ── MEMBERSHIPS ──────────────────────────────────────────
+  const memSection = document.querySelector('#memberships .member-list');
+  if (memSection && d.memberships && d.memberships.length) {
+    const newMems = d.memberships.map(m => `
+      <div class="member-item">
+        <div class="member-name">${m.name}</div>
+        <div class="member-period">${m.period}</div>
+      </div>`).join('');
+    memSection.insertAdjacentHTML('afterbegin', newMems);
+  }
+
+  // ── RESEARCH EXPERIENCE ──────────────────────────────────
+  const expSection = document.querySelector('#experience .exp-list');
+  if (expSection && d.experience && d.experience.length) {
+    const newExp = d.experience.map(e => `
+      <div class="exp-card">
+        <div class="exp-header">
+          <div class="exp-title">${e.role}</div>
+          ${e.period ? `<div class="exp-period">${e.period}</div>` : ''}
+        </div>
+        <div class="exp-org">${e.org}</div>
+        ${e.project ? `<div class="exp-project">${e.project}</div>` : ''}
+        ${e.duties && e.duties.length ? `<ul class="exp-bullets">${e.duties.map(b=>`<li>${b}</li>`).join('')}</ul>` : ''}
+        ${e.refName ? `<div class="exp-ref"><strong>Reference:</strong> ${e.refName}${e.refEmail?` — <a href="mailto:${e.refEmail}">${e.refEmail}</a>`:''}</div>` : ''}
+      </div>`).join('');
+    expSection.insertAdjacentHTML('afterbegin', newExp);
+  }
+
+  // ── WORKSHOPS ────────────────────────────────────────────
+  const wsSection = document.querySelector('#workshops .workshop-list');
+  if (wsSection && d.workshops && d.workshops.length) {
+    const newWs = d.workshops.map(w => `
+      <div class="workshop-item">
+        <div class="workshop-text"><strong>${w.title}</strong>${w.org ? ' — ' + w.org : ''}</div>
+        <div class="workshop-year">${w.date || ''}</div>
+      </div>`).join('');
+    wsSection.insertAdjacentHTML('afterbegin', newWs);
+  }
+
+  // ── HERO PROFILE OVERRIDES ───────────────────────────────
+  if (d.hero) {
+    const h = d.hero;
+    if (h.badge) {
+      const eyebrow = document.querySelector('.hero-eyebrow');
+      if (eyebrow) eyebrow.childNodes[eyebrow.childNodes.length-1].textContent = h.badge;
+    }
+  }
+
+})();
+
+// ── Theme toggle ──────────────────────────────────────────
   const html = document.documentElement;
   const icon = document.getElementById('themeIcon');
   const label = document.getElementById('themeLabel');

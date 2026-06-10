@@ -673,33 +673,37 @@ a{color:var(--accent)}
 
 <!-- EXPORT -->
 <div class="panel" id="panel-export">
-  <div class="panel-title">Export & Deploy</div>
-  <div class="panel-sub">Download your updated site and publish to GitHub Pages.</div>
+  <div class="panel-title">How Updates Work</div>
+  <div class="panel-sub">Your site reads directly from this admin panel — no export needed.</div>
 
-  <div class="export-box">
-    <h3>⬇ Download Updated index.html</h3>
-    <p>This generates a complete, self-contained HTML file with all your latest content baked in. Replace the file on GitHub to update your live site.</p>
-    <button class="btn-sm btn-accent" style="font-size:.85rem;padding:.6rem 1.25rem" onclick="exportAndDownload()">Generate & Download index.html</button>
-  </div>
-
-  <div class="export-box">
-    <h3>🚀 Publish to GitHub Pages</h3>
+  <div class="export-box" style="border-left:3px solid var(--green)">
+    <h3>✅ How it works (Simple!)</h3>
+    <p>Everything you save here is stored in your browser. When someone visits your site (<strong style="color:var(--text)">index.html</strong>), it automatically reads this data and shows it instantly.</p>
     <ol class="step-list">
-      <li>Click "Generate & Download index.html" above</li>
-      <li>Go to your GitHub repository (e.g. <strong style="color:var(--text)">samiulalam.github.io</strong>)</li>
-      <li>Click the existing <code style="background:var(--subtle);padding:.1rem .3rem;border-radius:3px">index.html</code> → Edit (pencil icon)</li>
-      <li>Select all → Paste the new content → Commit changes</li>
-      <li>Your site updates live within 1–2 minutes ✅</li>
+      <li>Add content in any section (Publications, Talks, Awards...)</li>
+      <li>Click Save — it saves automatically to this browser</li>
+      <li>Open your site — new content appears immediately ✅</li>
     </ol>
-    <p style="color:var(--faint)">Alternatively: drag & drop the file into your repo via GitHub's upload interface.</p>
+    <p style="color:var(--faint);margin-top:.75rem">⚠️ This works on <strong style="color:var(--muted)">the same browser and device</strong> where you use the admin panel. Visitors on other devices see the static version from GitHub.</p>
+  </div>
+
+  <div class="export-box" style="border-left:3px solid var(--accent)">
+    <h3>🌍 Make Updates Visible to Everyone</h3>
+    <p>To publish updates so all visitors worldwide can see them, use the backup system below:</p>
+    <ol class="step-list">
+      <li>Click <strong style="color:var(--text)">"Export Data Backup (JSON)"</strong> below</li>
+      <li>Send this JSON file to me (via Claude chat)</li>
+      <li>I will generate an updated <code style="background:var(--subtle);padding:.1rem .4rem;border-radius:4px">index.html</code> with all your new content baked in</li>
+      <li>Upload that new file to GitHub — done ✅</li>
+    </ol>
   </div>
 
   <div class="export-box">
-    <h3>💾 Auto-Save Status</h3>
-    <p>All changes are automatically saved to your browser's local storage. They persist across sessions on this device.</p>
+    <h3>💾 Backup & Restore</h3>
+    <p>Always keep a backup of your data in case you switch devices or browsers.</p>
     <div style="display:flex;gap:.75rem;flex-wrap:wrap">
-      <button class="btn-sm btn-ghost" onclick="exportData()">Export Data Backup (JSON)</button>
-      <button class="btn-sm btn-ghost" onclick="document.getElementById('import-json').click()">Import Data Backup</button>
+      <button class="btn-sm btn-success" onclick="exportData()">⬇ Export Data Backup (JSON)</button>
+      <button class="btn-sm btn-ghost" onclick="document.getElementById('import-json').click()">⬆ Import Data Backup</button>
       <input type="file" id="import-json" accept=".json" style="display:none" onchange="importData(this)"/>
       <button class="btn-sm btn-danger" onclick="clearAllData()">⚠ Reset All Data</button>
     </div>
